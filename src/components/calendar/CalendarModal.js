@@ -34,6 +34,16 @@ export default function CalendarModal() {
 
   const [dateStart, setDateStart] = useState(now.toDate());
   const [dateEnd, setDateEnd] = useState(later.toDate());
+
+  const [formValues, setformValues] = useState({
+    title: 'Evento',
+    notes: '',
+    start: now.toDate(),
+    end: later.toDate()
+  });
+
+  const { notes, title } = formValues;
+
   const closeModal = () => {
     console.log('closing');
   };
@@ -42,12 +52,32 @@ export default function CalendarModal() {
     // Por la libreria este evento me devolvera la fecha.
     console.log(e);
     setDateStart(e);
+    setformValues({
+      ...formValues,
+      start: e
+    });
   };
 
   const handleEndChange = (e) => {
     // Por la libreria este evento me devolvera la fecha.
     console.log(e);
     setDateEnd(e);
+    setformValues({
+      ...formValues,
+      end: e
+    });
+  };
+
+  const handleInputChange = ({ target }) => {
+    setformValues({
+      ...formValues,
+      [target.name]: target.value
+    });
+  };
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault(e);
+    console.log(formValues);
   };
 
   return (
@@ -63,7 +93,7 @@ export default function CalendarModal() {
     >
       <h1> Nuevo evento </h1>
       <hr />
-      <form className="container">
+      <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
           <label>Fecha y hora inicio</label>
           <DateTimePicker
@@ -92,6 +122,8 @@ export default function CalendarModal() {
             placeholder="Título del evento"
             name="title"
             autoComplete="off"
+            value={title}
+            onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
             Una descripción corta
@@ -105,6 +137,8 @@ export default function CalendarModal() {
             placeholder="Notas"
             rows="5"
             name="notes"
+            value={notes}
+            onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
             Información adicional
