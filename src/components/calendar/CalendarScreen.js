@@ -7,6 +7,7 @@ import { messages } from '../../helpers/calendar-messages-es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
+import CalendarModal from './CalendarModal';
 
 // cambiar el idioma a moment.
 moment.locale('es');
@@ -88,6 +89,8 @@ export function CalendarScreen() {
         onView={onViewChange}
         view={lastView}
       />
+
+      <CalendarModal />
     </div>
   );
 }
