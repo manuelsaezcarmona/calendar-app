@@ -1,8 +1,10 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import Modal from 'react-modal/lib/components/Modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
 parte de la aplicacion porque desde cualquier parte quiero lanzar este modal */
@@ -34,6 +36,7 @@ export default function CalendarModal() {
 
   const [dateStart, setDateStart] = useState(now.toDate());
   const [dateEnd, setDateEnd] = useState(later.toDate());
+  const [titleValid, settitleValid] = useState(true);
 
   const [formValues, setformValues] = useState({
     title: 'Evento',
@@ -42,9 +45,10 @@ export default function CalendarModal() {
     end: later.toDate()
   });
 
-  const { notes, title } = formValues;
+  const { notes, title, start, end } = formValues;
 
   const closeModal = () => {
+    // TODO cerrar el modal
     console.log('closing');
   };
 
@@ -77,7 +81,26 @@ export default function CalendarModal() {
 
   const handleSubmitForm = (e) => {
     e.preventDefault(e);
+    // Validacion de formulario
+    // Primero las fechas los datos son guardados como fechas JS nativa, tenemos que
+    // convertirlas para que sea facil trabajar con ellas
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      Swal.fire('Error', 'La fecha fin debe ser mayor a la de inicio', 'error');
+      return;
+    }
+    // Vamos a hacer la validacion sin libreria sino con otro estado que lo controle.
+    // Y cuando no sea valido cambiare la clase del input a otra no valida que me proporciona bootstrap
+    if (title.trim().length < 2) {
+      settitleValid(false);
+      return;
+    }
+
+    // Al finalizar debe de ir a la base de datos etc. por ahora cerramos el modal
     console.log(formValues);
+    settitleValid(true);
+    closeModal();
   };
 
   return (
@@ -118,7 +141,7 @@ export default function CalendarModal() {
           <label>Titulo y notas</label>
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${!titleValid && 'is-invalid'}`}
             placeholder="Título del evento"
             name="title"
             autoComplete="off"
