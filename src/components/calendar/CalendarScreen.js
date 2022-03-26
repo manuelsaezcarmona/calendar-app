@@ -21,23 +21,6 @@ moment.locale('es');
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
 // mock de myEventsList
 
-// eslint-disable-next-line no-unused-vars
-/* const events = [
-  {
-    title: 'Mi tarea',
-    start: moment().toDate(),
-    end: moment()
-      .add(2, 'hours')
-      .toDate(),
-    bgcolor: '#fafafa',
-    notes: 'Comprar un pastel',
-    user: {
-      _id: '123',
-      name: 'Manuel'
-    }
-  }
-]; */
-
 export function CalendarScreen() {
   // esta funcion permite personalizar el estilo de los eventos que se crean (mirar la documentacion de la libreria)
 
@@ -76,7 +59,6 @@ export function CalendarScreen() {
   const onSelectEvent = (e) => {
     // console.log(e);
     dispatch(setActiveEvent(e));
-    dispatch(uiOpenModal());
   };
 
   const onViewChange = (e) => {

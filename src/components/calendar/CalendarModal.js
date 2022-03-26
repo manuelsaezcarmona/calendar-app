@@ -1,13 +1,17 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal/lib/components/Modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
-import { addNewEvent } from '../../redux/actioncreators/event.actioncreator';
+import {
+  addNewEvent,
+  eventClearActiveEvent
+} from '../../redux/actioncreators/event.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
 parte de la aplicacion porque desde cualquier parte quiero lanzar este modal */
@@ -30,12 +34,20 @@ const now = moment()
 
 const later = now.clone().add(1, 'hours');
 
+const initEvent = {
+  title: '',
+  notes: '',
+  start: now.toDate(),
+  end: later.toDate()
+};
+
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 // Aqui es el primer enganche root-element  a nuestra app que es en el index.html o index.js
 Modal.setAppElement('#calendar-app');
 
 export default function CalendarModal() {
   const { modalOpen } = useSelector((store) => store.ui);
+  const { activeEvent } = useSelector((store) => store.calendar);
   const dispatch = useDispatch();
 
   /** Para definir la fecha voy a usar un useState porque no lo voy a usar en otra parte */
@@ -43,19 +55,31 @@ export default function CalendarModal() {
   const [dateEnd, setDateEnd] = useState(later.toDate());
   const [titleValid, settitleValid] = useState(true);
 
-  const [formValues, setformValues] = useState({
-    title: 'Evento',
-    notes: '',
-    start: now.toDate(),
-    end: later.toDate()
-  });
+  const [formValues, setformValues] = useState(initEvent);
 
   const { notes, title, start, end } = formValues;
 
+  /** Necesito un efecto que este pendiente de los cambios del evento activo para que
+   * cuando este cambie se actulice con los nuevos cambios en el store, tambien me va a
+   * servir para cuando haga doble click en el evento el modal recupere los datos y se
+   * los muestre al usuario
+   */
+
+  useEffect(() => {
+    /* Al cargar el calendario el activeEvent es null asi que lo controlamos
+    TIP lo que usemos dentro del useEffect hay que ponerlo como dependencia para que useEffect se dispare
+    cuando uno de los dos cambie */
+    if (activeEvent) {
+      setformValues(activeEvent);
+    }
+  }, [activeEvent, setformValues]);
+
   const closeModal = () => {
-    // TODO cerrar el modal
-    console.log('cerrar modal');
     dispatch(uiCloseModal());
+    // Vaciamos el efecto activo
+    dispatch(eventClearActiveEvent());
+    // Vaciamos el formulario
+    setformValues(initEvent);
   };
 
   const handleStartChange = (e) => {
