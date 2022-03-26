@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/es';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import { messages } from '../../helpers/calendar-messages-es';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { uiOpenModal } from '../../redux/actioncreators/ui.actioncreator';
 import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
 import CalendarModal from './CalendarModal';
@@ -35,9 +37,12 @@ const events = [
 export function CalendarScreen() {
   // esta funcion permite personalizar el estilo de los eventos que se crean (mirar la documentacion de la libreria)
 
+  const dispatch = useDispatch();
+
   const [lastView, setlastView] = useState(
     localStorage.getItem('lastview') || 'month'
   );
+
   // eslint-disable-next-line no-unused-vars
   const eventStyleGetter = (event, start, end, isSelected) => {
     // console.log(event, start, end, isSelected);
@@ -53,13 +58,17 @@ export function CalendarScreen() {
     };
   };
 
+  // eslint-disable-next-line no-unused-vars
   const onDoubleClick = (e) => {
     // el evento me devuelve el evento-item seleccionado
-    console.log(e);
+    // console.log(e);
+    console.log('abrir modal');
+    dispatch(uiOpenModal());
   };
-
+  // eslint-disable-next-line no-unused-vars
   const onSelectEvent = (e) => {
-    console.log(e);
+    // console.log(e);
+    console.log('seleccionar evento');
   };
 
   const onViewChange = (e) => {

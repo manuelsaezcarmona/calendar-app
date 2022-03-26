@@ -5,6 +5,8 @@ import Modal from 'react-modal/lib/components/Modal';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import { useSelector, useDispatch } from 'react-redux';
+import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
 parte de la aplicacion porque desde cualquier parte quiero lanzar este modal */
@@ -32,8 +34,10 @@ const later = now.clone().add(1, 'hours');
 Modal.setAppElement('#calendar-app');
 
 export default function CalendarModal() {
-  /** Para definir la fecha voy a usar un useState porque no lo voy a usar en otra parte */
+  const { modalOpen } = useSelector((store) => store.ui);
+  const dispatch = useDispatch();
 
+  /** Para definir la fecha voy a usar un useState porque no lo voy a usar en otra parte */
   const [dateStart, setDateStart] = useState(now.toDate());
   const [dateEnd, setDateEnd] = useState(later.toDate());
   const [titleValid, settitleValid] = useState(true);
@@ -49,7 +53,8 @@ export default function CalendarModal() {
 
   const closeModal = () => {
     // TODO cerrar el modal
-    console.log('closing');
+    console.log('cerrar modal');
+    dispatch(uiCloseModal());
   };
 
   const handleStartChange = (e) => {
@@ -105,7 +110,7 @@ export default function CalendarModal() {
 
   return (
     <Modal
-      isOpen
+      isOpen={modalOpen}
       /*
       onAfterOpen={afterOpenModal} */
       onRequestClose={closeModal}
