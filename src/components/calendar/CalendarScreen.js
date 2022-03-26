@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/es';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -20,7 +20,9 @@ moment.locale('es');
 // to the correct localizer.
 const localizer = momentLocalizer(moment); // or globalizeLocalizer
 // mock de myEventsList
-const events = [
+
+// eslint-disable-next-line no-unused-vars
+/* const events = [
   {
     title: 'Mi tarea',
     start: moment().toDate(),
@@ -34,12 +36,15 @@ const events = [
       name: 'Manuel'
     }
   }
-];
+]; */
 
 export function CalendarScreen() {
   // esta funcion permite personalizar el estilo de los eventos que se crean (mirar la documentacion de la libreria)
 
   const dispatch = useDispatch();
+
+  // Leer del store los eventos.
+  const { events } = useSelector((store) => store.calendar);
 
   const [lastView, setlastView] = useState(
     localStorage.getItem('lastview') || 'month'
