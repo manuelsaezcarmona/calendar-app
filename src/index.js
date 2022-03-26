@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
-import { AppRouter } from './routers/AppRouter';
+import { CalendarApp } from './CalendarApp';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppRouter />
+    <CalendarApp />
   </React.StrictMode>,
   document.getElementById('calendar-app')
 );

@@ -17,6 +17,8 @@
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "import/prefer-default-export": "off",
     "comma-dangle": [2, "never"],
+    "default-param-last": "off",
+    "operator-linebreak": 0,
     "object-curly-newline": [
       "error",
       {
