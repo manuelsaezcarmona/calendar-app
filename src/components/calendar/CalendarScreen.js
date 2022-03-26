@@ -11,6 +11,7 @@ import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
 import CalendarModal from './CalendarModal';
 import { setActiveEvent } from '../../redux/actioncreators/event.actioncreator';
+import { FloatingBoton } from '../ui/FloatingBoton';
 
 // cambiar el idioma a moment.
 moment.locale('es');
@@ -63,13 +64,14 @@ export function CalendarScreen() {
   const onDoubleClick = (e) => {
     // el evento me devuelve el evento-item seleccionado
     // console.log(e);
-    console.log('abrir modal');
+    // console.log('abrir modal');
     dispatch(uiOpenModal());
   };
 
   const onSelectEvent = (e) => {
     // console.log(e);
     dispatch(setActiveEvent(e));
+    dispatch(uiOpenModal());
   };
 
   const onViewChange = (e) => {
@@ -99,7 +101,7 @@ export function CalendarScreen() {
         onView={onViewChange}
         view={lastView}
       />
-
+      <FloatingBoton />
       <CalendarModal />
     </div>
   );
