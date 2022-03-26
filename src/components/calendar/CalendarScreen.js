@@ -10,6 +10,7 @@ import { uiOpenModal } from '../../redux/actioncreators/ui.actioncreator';
 import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
 import CalendarModal from './CalendarModal';
+import { setActiveEvent } from '../../redux/actioncreators/event.actioncreator';
 
 // cambiar el idioma a moment.
 moment.locale('es');
@@ -65,10 +66,10 @@ export function CalendarScreen() {
     console.log('abrir modal');
     dispatch(uiOpenModal());
   };
-  // eslint-disable-next-line no-unused-vars
+
   const onSelectEvent = (e) => {
     // console.log(e);
-    console.log('seleccionar evento');
+    dispatch(setActiveEvent(e));
   };
 
   const onViewChange = (e) => {
