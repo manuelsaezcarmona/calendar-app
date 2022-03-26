@@ -7,6 +7,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
+import { addNewEvent } from '../../redux/actioncreators/event.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
 parte de la aplicacion porque desde cualquier parte quiero lanzar este modal */
@@ -103,7 +104,20 @@ export default function CalendarModal() {
     }
 
     // Al finalizar debe de ir a la base de datos etc. por ahora cerramos el modal
+    // En los campos del formularios tenemos todos los datos para generar un nuevo evento.
+    // Podemos disparar la accion de añadir una nueva nota
     console.log(formValues);
+    dispatch(
+      addNewEvent({
+        ...formValues,
+        id: new Date().getTime(),
+        user: {
+          _id: '123',
+          name: 'Manuel Saez'
+        }
+      })
+    );
+
     settitleValid(true);
     closeModal();
   };
