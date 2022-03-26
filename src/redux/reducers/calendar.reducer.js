@@ -4,6 +4,7 @@ import { types } from '../types/action-types';
 const initialState = {
   events: [
     {
+      id: new Date().getTime(),
       title: 'Mi tarea',
       start: moment().toDate(),
       end: moment()
@@ -35,6 +36,24 @@ export const calendarReducer = (state = initialState, action) => {
     case types.eventCleanActive:
       return {
         ...state,
+        activeEvent: null
+      };
+    case types.eventUpdate:
+      return {
+        ...state,
+        events: state.events.map((event) => {
+          if (event.id === action.payload.id) {
+            return action.payload;
+          }
+          return event;
+        })
+      };
+    case types.eventDelete:
+      return {
+        ...state,
+        events: state.events.filter(
+          (event) => event.id !== state.activeEvent.id
+        ),
         activeEvent: null
       };
     default:

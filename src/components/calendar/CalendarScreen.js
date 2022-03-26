@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,8 +11,12 @@ import { uiOpenModal } from '../../redux/actioncreators/ui.actioncreator';
 import { Navbar } from '../ui/Navbar';
 import { CalendarEvent } from './CalendarEvent';
 import CalendarModal from './CalendarModal';
-import { setActiveEvent } from '../../redux/actioncreators/event.actioncreator';
+import {
+  eventClearActiveEvent,
+  setActiveEvent
+} from '../../redux/actioncreators/event.actioncreator';
 import { FloatingBoton } from '../ui/FloatingBoton';
+import { DeleteFButton } from '../ui/DeleteFButton';
 
 // cambiar el idioma a moment.
 moment.locale('es');
@@ -27,7 +32,7 @@ export function CalendarScreen() {
   const dispatch = useDispatch();
 
   // Leer del store los eventos.
-  const { events } = useSelector((store) => store.calendar);
+  const { events, activeEvent } = useSelector((store) => store.calendar);
 
   const [lastView, setlastView] = useState(
     localStorage.getItem('lastview') || 'month'
@@ -68,6 +73,15 @@ export function CalendarScreen() {
     localStorage.setItem('lastview', e);
   };
 
+  const handleSelectSlot = () => {
+    // el Event es el objeto slot console.log(e);
+    dispatch(eventClearActiveEvent());
+  };
+
+  /** Inplementacion de que desaparezca el boton de borrar cuando no este seleccionado un evento. En BigCalendar existe una prop onSelecteSlot y para que se llame
+   * necesito otra propiedad que es selectable = true. Esto te da un objeto slot que puedes usar para implementar logica en tu programa.
+   * Te da fecha de inicio de final. Esto te puede permitir como crear un nuevo evento al hacer click en un selector se abra la ventana de nuevo evento , etc...
+   */
   return (
     <div className="calendar-screen">
       <Navbar />
@@ -85,10 +99,15 @@ export function CalendarScreen() {
         }}
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelectEvent}
+        onSelectSlot={handleSelectSlot}
+        selectable
         onView={onViewChange}
         view={lastView}
       />
       <FloatingBoton />
+
+      {activeEvent && <DeleteFButton />}
+
       <CalendarModal />
     </div>
   );

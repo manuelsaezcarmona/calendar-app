@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -10,7 +11,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
 import {
   addNewEvent,
-  eventClearActiveEvent
+  eventClearActiveEvent,
+  eventUpdate
 } from '../../redux/actioncreators/event.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
@@ -66,11 +68,15 @@ export default function CalendarModal() {
    */
 
   useEffect(() => {
-    /* Al cargar el calendario el activeEvent es null asi que lo controlamos
+    /* Al cargar el calendario el activeEvent es null asi que lo controlamos.
+    Si existe cargamos los datos del store y si no reinicia el formulario con los
+    valores iniciales
     TIP lo que usemos dentro del useEffect hay que ponerlo como dependencia para que useEffect se dispare
     cuando uno de los dos cambie */
     if (activeEvent) {
       setformValues(activeEvent);
+    } else {
+      setformValues(initEvent);
     }
   }, [activeEvent, setformValues]);
 
@@ -130,17 +136,23 @@ export default function CalendarModal() {
     // Al finalizar debe de ir a la base de datos etc. por ahora cerramos el modal
     // En los campos del formularios tenemos todos los datos para generar un nuevo evento.
     // Podemos disparar la accion de añadir una nueva nota
-    console.log(formValues);
-    dispatch(
-      addNewEvent({
-        ...formValues,
-        id: new Date().getTime(),
-        user: {
-          _id: '123',
-          name: 'Manuel Saez'
-        }
-      })
-    );
+
+    /* A la hora de guardar podemos saber cuando estamos editando un evento existente
+    o estamos haciendo una nueva nota en funcion si la nota activa tiene o no datos */
+    if (activeEvent) {
+      dispatch(eventUpdate(formValues));
+    } else {
+      dispatch(
+        addNewEvent({
+          ...formValues,
+          id: new Date().getTime(),
+          user: {
+            _id: '123',
+            name: 'Manuel Saez'
+          }
+        })
+      );
+    }
 
     settitleValid(true);
     closeModal();
@@ -157,7 +169,7 @@ export default function CalendarModal() {
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
     >
-      <h1> Nuevo evento </h1>
+      <h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
       <hr />
       <form className="container" onSubmit={handleSubmitForm}>
         <div className="form-group">
