@@ -1,9 +1,14 @@
+/* eslint-disable object-curly-newline */
 import React from 'react';
 // eslint-disable-next-line import/no-unresolved
 import './login.css';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import { useForm } from '../../hooks/useForm';
-import { StartLogin } from '../../redux/actioncreators/auth.actioncreator';
+import {
+  StartLogin,
+  startRegister
+} from '../../redux/actioncreators/auth.actioncreator';
 
 export function LoginScreen() {
   const dispatch = useDispatch();
@@ -27,9 +32,15 @@ export function LoginScreen() {
     dispatch(StartLogin(logEmail, logPassw));
   };
 
+  // eslint-disable-next-line consistent-return
   const handleRegisterSubmit = (e) => {
     e.preventDefault();
-    console.log(formRegisterValues);
+
+    if (regPassw1 !== regPassw2) {
+      return Swal.fire('Error', 'las contraseñas deben ser iguales', 'error');
+    }
+
+    dispatch(startRegister(regEmail, regPassw1, RegName));
   };
 
   return (
