@@ -8,7 +8,7 @@ import { StartLogin } from '../../redux/actioncreators/auth.actioncreator';
 export function LoginScreen() {
   const dispatch = useDispatch();
   const [formLoginValues, handleLoginInputChange] = useForm({
-    logEmail: 'manu@manu.com',
+    logEmail: 'juan@manu.com',
     logPassw: '123456'
   });
   const { logEmail, logPassw } = formLoginValues;
@@ -21,6 +21,7 @@ export function LoginScreen() {
   });
 
   const { RegName, regEmail, regPassw1, regPassw2 } = formRegisterValues;
+
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     dispatch(StartLogin(logEmail, logPassw));
