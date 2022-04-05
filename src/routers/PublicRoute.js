@@ -17,7 +17,7 @@ export function PublicRoute({
     <Route
       {...rest}
       component={(props) =>
-        !isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
+        isAuthenticated ? <Redirect to="/" /> : <Component {...props} />
       }
     />
   );

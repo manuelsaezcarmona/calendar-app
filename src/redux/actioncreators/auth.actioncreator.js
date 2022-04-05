@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Swal from 'sweetalert2';
 import { fetchConToken, fetchSinToken } from '../../helpers/fetch.helper';
 import { types } from '../types/action-types';
@@ -68,7 +69,7 @@ export const startChecking = () => async (dispatch) => {
   // eslint-disable-next-line object-curly-newline
   const resp = await fetchConToken('/auth/renew', {}, 'GET');
   const body = await resp.json();
-  console.log(body);
+  //  console.log(body);
   if (body.ok) {
     localStorage.setItem('token', body.token);
     localStorage.setItem('token-init-date', new Date().getTime());
@@ -81,4 +82,16 @@ export const startChecking = () => async (dispatch) => {
   } else {
     dispatch(chekingFinish());
   }
+};
+
+/** Para hacer logout lo que necesito es  borrar la informacion del localStorage y tambien quitar esa informacion del state */
+
+export const logout = () => ({
+  type: types.authLogout
+});
+
+/** Aunque sea al localStorage es un procedimiento que llamo asi que hago uso del thunk */
+export const startlogout = () => (dispatch) => {
+  localStorage.clear();
+  dispatch(logout());
 };

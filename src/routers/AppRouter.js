@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, BrowserRouter, Switch } from 'react-router-dom';
+import { Redirect, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { LoginScreen } from '../components/auth/LoginScreen';
 import { CalendarScreen } from '../components/calendar/CalendarScreen';
@@ -44,7 +44,7 @@ export function AppRouter() {
    * !uid=false  si hago !(!uid=false) entonces sera un true
    */
   return (
-    <BrowserRouter>
+    <Router>
       <div>
         <Switch>
           <PublicRoute
@@ -62,6 +62,6 @@ export function AppRouter() {
           <Redirect to="/" />
         </Switch>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
