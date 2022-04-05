@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /** checking: si es en true ira a la pantalla que esté solicitando
  * si es en false ira a la pantalla de login
  */
@@ -19,6 +20,16 @@ export const authReducer = (state = initialState, action) => {
         ...action.payload
       };
 
+    case types.authCheckingFinish:
+      return {
+        ...state,
+        checking: false
+      };
+    case types.authLogout:
+      /* en esta opcion quiero dejar el state limpio asi que no voy a hacer una copia del state lo dejo limpio */
+      return {
+        checking: false
+      };
     default:
       return state;
   }

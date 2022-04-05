@@ -13,7 +13,7 @@ import {
 export function LoginScreen() {
   const dispatch = useDispatch();
   const [formLoginValues, handleLoginInputChange] = useForm({
-    logEmail: 'juan@manu.com',
+    logEmail: 'jose@manu.com',
     logPassw: '123456'
   });
   const { logEmail, logPassw } = formLoginValues;

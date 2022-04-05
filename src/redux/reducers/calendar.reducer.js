@@ -5,13 +5,13 @@ const initialState = {
   events: [
     {
       id: new Date().getTime(),
-      title: 'Mi tarea',
+      title: 'Init tarea',
       start: moment().toDate(),
       end: moment()
         .add(2, 'hours')
         .toDate(),
       bgcolor: '#fafafa',
-      notes: 'Comprar un pastel',
+      notes: 'Tarea de InitState',
       user: {
         _id: '123',
         name: 'Manuel'
