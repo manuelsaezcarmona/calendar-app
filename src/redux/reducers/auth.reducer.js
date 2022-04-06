@@ -26,7 +26,8 @@ export const authReducer = (state = initialState, action) => {
         checking: false
       };
     case types.authLogout:
-      /* en esta opcion quiero dejar el state limpio asi que no voy a hacer una copia del state lo dejo limpio */
+      /* en esta opcion quiero dejar el state limpio asi que no voy a hacer una copia del state lo dejo limpio el checking en false porque
+      la comprobacion se realizo cuando hicimos login para entrar al calendario */
       return {
         checking: false
       };

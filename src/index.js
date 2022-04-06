@@ -4,8 +4,7 @@ import './styles.css';
 import { CalendarApp } from './CalendarApp';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CalendarApp />
-  </React.StrictMode>,
+  <CalendarApp />,
+
   document.getElementById('calendar-app')
 );

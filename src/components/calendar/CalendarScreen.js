@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -13,6 +14,7 @@ import { CalendarEvent } from './CalendarEvent';
 import CalendarModal from './CalendarModal';
 import {
   eventClearActiveEvent,
+  eventStartLoading,
   setActiveEvent
 } from '../../redux/actioncreators/event.actioncreator';
 import { FloatingBoton } from '../ui/FloatingBoton';
@@ -27,22 +29,26 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 // mock de myEventsList
 
 export function CalendarScreen() {
-  // esta funcion permite personalizar el estilo de los eventos que se crean (mirar la documentacion de la libreria)
-
   const dispatch = useDispatch();
 
   // Leer del store los eventos.
   const { events, activeEvent } = useSelector((store) => store.calendar);
+  const { uid } = useSelector((store) => store.auth);
 
   const [lastView, setlastView] = useState(
     localStorage.getItem('lastview') || 'month'
   );
 
+  useEffect(() => {
+    dispatch(eventStartLoading());
+  }, [dispatch]);
+  // esta funcion permite personalizar el estilo de los eventos que se crean (mirar la documentacion de la libreria)
   // eslint-disable-next-line no-unused-vars
   const eventStyleGetter = (event, start, end, isSelected) => {
     // console.log(event, start, end, isSelected);
+    // Con un ternario voy a cambiar el color del fondo en funcion de si es el usuario logeado o no
     const style = {
-      backgroundColor: '#367CF7',
+      backgroundColor: uid === event.user._id ? '#367CF7' : '#465660',
       borderRadius: '0px',
       opacity: 0.8,
       display: 'block',
@@ -67,7 +73,6 @@ export function CalendarScreen() {
   };
 
   const onViewChange = (e) => {
-    console.log(e);
     setlastView(e);
     // el evento me devuelve el nombre de la vista(semana, mes, etc..)
     localStorage.setItem('lastview', e);

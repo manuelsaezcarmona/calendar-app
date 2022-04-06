@@ -10,9 +10,9 @@ import Swal from 'sweetalert2';
 import { useSelector, useDispatch } from 'react-redux';
 import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
 import {
-  addNewEvent,
+  eventStartAddNew,
   eventClearActiveEvent,
-  eventUpdate
+  startEventUpdate
 } from '../../redux/actioncreators/event.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
@@ -90,7 +90,7 @@ export default function CalendarModal() {
 
   const handleStartChange = (e) => {
     // Por la libreria este evento me devolvera la fecha.
-    console.log(e);
+    // console.log(e);
     setDateStart(e);
     setformValues({
       ...formValues,
@@ -100,7 +100,7 @@ export default function CalendarModal() {
 
   const handleEndChange = (e) => {
     // Por la libreria este evento me devolvera la fecha.
-    console.log(e);
+    //  console.log(e);
     setDateEnd(e);
     setformValues({
       ...formValues,
@@ -140,17 +140,18 @@ export default function CalendarModal() {
     /* A la hora de guardar podemos saber cuando estamos editando un evento existente
     o estamos haciendo una nueva nota en funcion si la nota activa tiene o no datos */
     if (activeEvent) {
-      dispatch(eventUpdate(formValues));
+      dispatch(startEventUpdate(formValues));
     } else {
       dispatch(
-        addNewEvent({
-          ...formValues,
+        // Recuerda este objeto que vemos aqui es nuestro event que pasamos como parametro a la action.
+        // el mockeo del evento lo elimino pues me lo proporciona mi backend incluso ya no necesito desectructurarlo
+        /** ,
           id: new Date().getTime(),
           user: {
             _id: '123',
             name: 'Manuel Saez'
-          }
-        })
+          } */
+        eventStartAddNew(formValues)
       );
     }
 
