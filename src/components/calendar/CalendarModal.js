@@ -12,7 +12,7 @@ import { uiCloseModal } from '../../redux/actioncreators/ui.actioncreator';
 import {
   eventStartAddNew,
   eventClearActiveEvent,
-  eventUpdate
+  startEventUpdate
 } from '../../redux/actioncreators/event.actioncreator';
 /* Segun la documentacion ellos utilizan useState para controlar al modal pero
 nosotros vamos a utilizar Redux para que pueda controlar el modal en cualquier
@@ -140,7 +140,7 @@ export default function CalendarModal() {
     /* A la hora de guardar podemos saber cuando estamos editando un evento existente
     o estamos haciendo una nueva nota en funcion si la nota activa tiene o no datos */
     if (activeEvent) {
-      dispatch(eventUpdate(formValues));
+      dispatch(startEventUpdate(formValues));
     } else {
       dispatch(
         // Recuerda este objeto que vemos aqui es nuestro event que pasamos como parametro a la action.

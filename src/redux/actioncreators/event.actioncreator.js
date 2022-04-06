@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable max-len */
+import Swal from 'sweetalert2';
 import { fetchConToken } from '../../helpers/fetch.helper';
 import { prepareEvents } from '../../helpers/prepareEvents';
 import { types } from '../types/action-types';
@@ -49,10 +50,28 @@ export const eventClearActiveEvent = () => ({
 });
 
 // Ojo el evento cuando lanzamos la accion ya se encuentra actualizado
-export const eventUpdate = (event) => ({
+// eslint-disable-next-line no-unused-vars
+const eventUpdate = (event) => ({
   type: types.eventUpdate,
   payload: event
 });
+
+export const startEventUpdate = (event) => {
+  // eslint-disable-next-line no-unused-vars
+  return async (dispatch) => {
+    try {
+      const resp = await fetchConToken(`/events/${event.id}`, event, 'PUT');
+      const body = await resp.json();
+      if (body.ok) {
+        dispatch(eventUpdate(event));
+      } else {
+        Swal.fire('Error', body.msg, 'error');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 export const eventDeleted = () => ({
   type: types.eventDelete
@@ -79,7 +98,7 @@ export const eventStartLoading = () => {
        */
       const events = prepareEvents(body.eventos);
 
-      console.log(events);
+      // console.log(events);
       dispatch(eventLoaded(events));
     } catch (error) {
       console.log(error);
