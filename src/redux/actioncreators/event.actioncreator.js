@@ -73,9 +73,29 @@ export const startEventUpdate = (event) => {
   };
 };
 
-export const eventDeleted = () => ({
+const eventDeleted = () => ({
   type: types.eventDelete
 });
+
+export const startEventDelete = () => {
+  // necesito el gestState para recuperar de mi store el id del eventoactivo
+  return async (dispatch, getState) => {
+    const { id } = getState().calendar.activeEvent;
+
+    try {
+      // eslint-disable-next-line object-curly-newline
+      const resp = await fetchConToken(`/events/${id}`, {}, 'DELETE');
+      const body = await resp.json();
+      if (body.ok) {
+        dispatch(eventDeleted());
+      } else {
+        Swal.fire('Error', body.msg, 'error');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
 
 // eslint-disable-next-line no-unused-vars
 const eventLoaded = (events) => ({
