@@ -49,6 +49,10 @@ export const eventClearActiveEvent = () => ({
   type: types.eventCleanActive
 });
 
+export const eventLogout = () => ({
+  type: types.eventCleanLogout
+});
+
 // Ojo el evento cuando lanzamos la accion ya se encuentra actualizado
 // eslint-disable-next-line no-unused-vars
 const eventUpdate = (event) => ({

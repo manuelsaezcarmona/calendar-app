@@ -2,6 +2,7 @@
 import Swal from 'sweetalert2';
 import { fetchConToken, fetchSinToken } from '../../helpers/fetch.helper';
 import { types } from '../types/action-types';
+import { eventLogout } from './event.actioncreator';
 
 const login = (user) => ({
   type: types.authLogin,
@@ -93,5 +94,6 @@ export const logout = () => ({
 /** Aunque sea al localStorage es un procedimiento que llamo asi que hago uso del thunk */
 export const startlogout = () => (dispatch) => {
   localStorage.clear();
+  dispatch(eventLogout());
   dispatch(logout());
 };
