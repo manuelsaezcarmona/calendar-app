@@ -1,4 +1,7 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable max-len */
 import { fetchConToken } from '../../helpers/fetch.helper';
+import { prepareEvents } from '../../helpers/prepareEvents';
 import { types } from '../types/action-types';
 
 // eslint-disable-next-line no-unused-vars
@@ -54,3 +57,32 @@ export const eventUpdate = (event) => ({
 export const eventDeleted = () => ({
   type: types.eventDelete
 });
+
+// eslint-disable-next-line no-unused-vars
+const eventLoaded = (events) => ({
+  type: types.eventLoaded,
+  payload: events
+});
+
+// ¿cuando disparamos esta accion, podemos dispararlo cuando el componente de calendario se recargue.
+// eslint-disable-next-line no-unused-vars
+export const eventStartLoading = () => {
+  return async (dispatch) => {
+    try {
+      const resp = await fetchConToken('/events/');
+      const body = await resp.json();
+
+      /* tenemos que controlar que los eventos se encuentren bien construidos o mi aplicacion va a reventar.
+       Debo formatear estos eventos para que sean reconocidos por nuestra aplicacion, ademas las fechas que vienen
+       del back en formato texto hay que volverlas a reconvertirlas en fechas esto lo mejor es hacernos una funcion
+       helper que nos ayude con ello.
+       */
+      const events = prepareEvents(body.eventos);
+
+      console.log(events);
+      dispatch(eventLoaded(events));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

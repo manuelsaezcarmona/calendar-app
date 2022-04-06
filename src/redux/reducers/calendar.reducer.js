@@ -1,7 +1,8 @@
-import moment from 'moment';
+/* eslint-disable max-len */
+// import moment from 'moment';
 import { types } from '../types/action-types';
 
-const initialState = {
+/* const initialState = {
   events: [
     {
       id: new Date().getTime(),
@@ -10,7 +11,6 @@ const initialState = {
       end: moment()
         .add(2, 'hours')
         .toDate(),
-      bgcolor: '#fafafa',
       notes: 'Tarea de InitState',
       user: {
         _id: '123',
@@ -18,6 +18,11 @@ const initialState = {
       }
     }
   ],
+  activeEvent: null
+}; */
+
+const initialState = {
+  events: [],
   activeEvent: null
 };
 
@@ -55,6 +60,14 @@ export const calendarReducer = (state = initialState, action) => {
           (event) => event.id !== state.activeEvent.id
         ),
         activeEvent: null
+      };
+
+    case types.eventLoaded:
+      // No ponemos solo action payload porque eso seria una carga inicial, y podiamos mutar ese array
+      // hacemos un spread sobre el array de eventos.
+      return {
+        ...state,
+        events: [...action.payload]
       };
     default:
       return state;
