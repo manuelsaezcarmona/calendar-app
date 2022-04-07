@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import * as fetchModule from '../../helpers/fetch.helper';
 import { types } from '../types/action-types';
 import { eventLogout } from './event.actioncreator';
-import { StartLogin, startRegister } from './auth.actioncreator';
+import { startChecking, StartLogin, startRegister } from './auth.actioncreator';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -121,6 +121,42 @@ describe('Given the auth action creators', () => {
     const actions = store.getActions();
     //  console.log(actions);
 
+    expect(actions[0]).toEqual({
+      type: '@auth/Login',
+      payload: {
+        uid: 123,
+        username: 'lolo'
+      }
+    });
+    // Podemos hacer un test que se haya llamado a grabar el token a traves del localStorage
+    expect(localStorage.setItem).toHaveBeenCalledWith('token', 'eltokenquesea');
+    // Y que establezca la fecha de inicio de valided del token en el localStorage
+    // como se encuentra programado en StartLogin
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token-init-date',
+      expect.any(Number)
+    );
+  });
+
+  test('startChecking Correcto', async () => {
+    // En este test necesito un token correcto pero no lo tenemos
+    // recuerda que no estamos testeando el endpoint asi que Podemos
+    // realizar un mockeo del token a traves de la function fetchConToken
+    // eslint-disable-next-line no-import-assign
+    fetchModule.fetchConToken = jest.fn(() => ({
+      json() {
+        return {
+          ok: true,
+          uid: 123,
+          username: 'lolo',
+          token: 'eltokenquesea'
+        };
+      }
+    }));
+
+    await store.dispatch(startChecking());
+    const actions = store.getActions();
+    // console.log(actions);
     expect(actions[0]).toEqual({
       type: '@auth/Login',
       payload: {
