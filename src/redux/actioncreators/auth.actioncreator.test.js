@@ -5,8 +5,6 @@ import '@testing-library/jest-dom';
 
 import Swal from 'sweetalert2';
 import * as fetchModule from '../../helpers/fetch.helper';
-import { types } from '../types/action-types';
-import { eventLogout } from './event.actioncreator';
 import { startChecking, StartLogin, startRegister } from './auth.actioncreator';
 
 const middlewares = [thunk];
