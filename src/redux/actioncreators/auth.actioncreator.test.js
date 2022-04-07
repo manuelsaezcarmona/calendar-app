@@ -4,10 +4,10 @@ import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 
 import Swal from 'sweetalert2';
-import { fetchConToken, fetchSinToken } from '../../helpers/fetch.helper';
+import * as fetchModule from '../../helpers/fetch.helper';
 import { types } from '../types/action-types';
 import { eventLogout } from './event.actioncreator';
-import { StartLogin } from './auth.actioncreator';
+import { StartLogin, startRegister } from './auth.actioncreator';
 
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
@@ -23,6 +23,8 @@ Storage.prototype.setItem = jest.fn();
 jest.mock('sweetalert2', () => ({
   fire: jest.fn()
 }));
+
+// Mock de crear la funcion de fetchConToken y fetchSinTocke
 
 describe('Given the auth action creators', () => {
   beforeEach(() => {
@@ -95,6 +97,44 @@ describe('Given the auth action creators', () => {
       'Error',
       'El usuario no existe con ese email',
       'error'
+    );
+  });
+
+  test('StartRegister action with correct', async () => {
+    // startRegister llama a fetchSintoken y eso ya lo probé en su prueba unitaria
+    // Voy a mockear esa funcion , no necesito volver a probarla
+    // Si solo digo fetchSinToken = jest.fn() no estoy retornando nada y quiero
+    // que me devuelva algo asi que se lo defino. Igual que hicimos en el Sweet Alert
+    // eslint-disable-next-line no-import-assign
+    fetchModule.fetchSinToken = jest.fn(() => ({
+      json() {
+        return {
+          ok: true,
+          uid: 123,
+          username: 'lolo',
+          token: 'eltokenquesea'
+        };
+      }
+    }));
+
+    await store.dispatch(startRegister('fake@manu.com', '1233456', 'userfake'));
+    const actions = store.getActions();
+    //  console.log(actions);
+
+    expect(actions[0]).toEqual({
+      type: '@auth/Login',
+      payload: {
+        uid: 123,
+        username: 'lolo'
+      }
+    });
+    // Podemos hacer un test que se haya llamado a grabar el token a traves del localStorage
+    expect(localStorage.setItem).toHaveBeenCalledWith('token', 'eltokenquesea');
+    // Y que establezca la fecha de inicio de valided del token en el localStorage
+    // como se encuentra programado en StartLogin
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token-init-date',
+      expect.any(Number)
     );
   });
 });
