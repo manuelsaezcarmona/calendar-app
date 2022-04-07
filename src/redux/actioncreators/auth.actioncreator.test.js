@@ -19,6 +19,11 @@ let store = mockStore(initState);
 // Mock de localStorage
 Storage.prototype.setItem = jest.fn();
 
+// Mock de Swal
+jest.mock('sweetalert2', () => ({
+  fire: jest.fn()
+}));
+
 describe('Given the auth action creators', () => {
   beforeEach(() => {
     store = mockStore(initState);
@@ -53,10 +58,43 @@ describe('Given the auth action creators', () => {
     );
 
     // Como sacar el argumento por el que fue llamado una funcion de jest
-    const llamadas = localStorage.setItem.mock.calls;
-    console.log(llamadas);
+    // const llamadas = localStorage.setItem.mock.calls;
+    // console.log(llamadas);
     // Nos devuelve un doble arreglo seguimos la pista para llegar al dato que nos interesa
     // const token = localStorage.setItem.mock.calls[0][1];
     // console.log(token);
+  });
+
+  test('Given the StartLoginAction with INcorrect Login', async () => {
+    // Lo primero vamos a hacer el dispatch de la accion.
+    await store.dispatch(StartLogin('jose@manu.com', 'incorrecto'));
+    // Verifiquemos las acciones que se van a disparar en ese store
+    const actions = store.getActions();
+    // console.log(actions);
+    /* Cuando el login es incorrecto no disparamos ninguna accion solo mostramos
+    un modal Swal  asi que eso es lo que tengo que evaluar */
+    expect(actions).toEqual([]);
+    // Ahora  espero que llame a Swal para ello voy a mockear Swal
+    expect(Swal.fire).toHaveBeenCalledWith(
+      'Error',
+      'Password Incorrecto',
+      'error'
+    );
+  });
+  test('Given the StartLoginAction with INcorrect EMAIL', async () => {
+    // Lo primero vamos a hacer el dispatch de la accion.
+    await store.dispatch(StartLogin('INCORRECTO@manu.com', '123456'));
+    // Verifiquemos las acciones que se van a disparar en ese store
+    const actions = store.getActions();
+    // console.log(actions);
+    /* Cuando el login es incorrecto no disparamos ninguna accion solo mostramos
+    un modal Swal  asi que eso es lo que tengo que evaluar */
+    expect(actions).toEqual([]);
+    // Ahora  espero que llame a Swal para ello voy a mockear Swal
+    expect(Swal.fire).toHaveBeenCalledWith(
+      'Error',
+      'El usuario no existe con ese email',
+      'error'
+    );
   });
 });
