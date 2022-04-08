@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Given the DeleteFbutton Shuuld renderizer correctry 1`] = `
+exports[`Given the DeleteFbutton Should renderizer correctly 1`] = `
 <button
   className="btn btn-danger fab-danger"
   onClick={[Function]}
