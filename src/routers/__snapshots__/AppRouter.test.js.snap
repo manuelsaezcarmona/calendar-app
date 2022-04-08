@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Given the appRouter When init the APProuter should to show "Espere..."  1`] = `
+<h5>
+  Espere...
+</h5>
+`;
