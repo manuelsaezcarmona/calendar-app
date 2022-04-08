@@ -10,7 +10,8 @@ const initialState = {
 
 describe('Given the authReducer', () => {
   test('should return the state by default', () => {
-    const state = authReducer(initialState, {});
+    const action = {};
+    const state = authReducer(initialState, action);
 
     expect(state).toEqual(initialState);
   });
