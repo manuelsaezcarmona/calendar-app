@@ -19,10 +19,10 @@ export function LoginScreen() {
   const { logEmail, logPassw } = formLoginValues;
 
   const [formRegisterValues, handleRegisterInputChange] = useForm({
-    RegName: 'Pepito Floro',
-    regEmail: 'pepito@email.com',
-    regPassw1: '123456',
-    regPassw2: '123456'
+    RegName: '',
+    regEmail: '',
+    regPassw1: '',
+    regPassw2: ''
   });
 
   const { RegName, regEmail, regPassw1, regPassw2 } = formRegisterValues;
