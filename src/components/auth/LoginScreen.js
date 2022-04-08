@@ -13,8 +13,8 @@ import {
 export function LoginScreen() {
   const dispatch = useDispatch();
   const [formLoginValues, handleLoginInputChange] = useForm({
-    logEmail: 'jose@manu.com',
-    logPassw: '123456'
+    logEmail: '',
+    logPassw: ''
   });
   const { logEmail, logPassw } = formLoginValues;
 
@@ -29,6 +29,7 @@ export function LoginScreen() {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
+    console.log(`email: ${logEmail}`, logPassw);
     dispatch(StartLogin(logEmail, logPassw));
   };
 

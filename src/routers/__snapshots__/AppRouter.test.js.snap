@@ -927,7 +927,7 @@ exports[`Given the appRouter If have uid in authState show PublicRoute 1`] = `
               onChange={[Function]}
               placeholder="Correo"
               type="text"
-              value="jose@manu.com"
+              value=""
             />
           </div>
           <div
@@ -939,7 +939,7 @@ exports[`Given the appRouter If have uid in authState show PublicRoute 1`] = `
               onChange={[Function]}
               placeholder="Contraseña"
               type="password"
-              value="123456"
+              value=""
             />
           </div>
           <div

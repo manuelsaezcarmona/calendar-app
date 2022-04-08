@@ -25,7 +25,7 @@ exports[`Given the LoginScreen Component should renderize & Snapshot 1`] = `
             onChange={[Function]}
             placeholder="Correo"
             type="text"
-            value="jose@manu.com"
+            value=""
           />
         </div>
         <div
@@ -37,7 +37,7 @@ exports[`Given the LoginScreen Component should renderize & Snapshot 1`] = `
             onChange={[Function]}
             placeholder="Contraseña"
             type="password"
-            value="123456"
+            value=""
           />
         </div>
         <div
