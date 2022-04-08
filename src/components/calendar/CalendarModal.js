@@ -125,6 +125,7 @@ export default function CalendarModal() {
     // convertirlas para que sea facil trabajar con ellas
     const momentStart = moment(start);
     const momentEnd = moment(end);
+
     if (momentStart.isSameOrAfter(momentEnd)) {
       Swal.fire('Error', 'La fecha fin debe ser mayor a la de inicio', 'error');
       return;
