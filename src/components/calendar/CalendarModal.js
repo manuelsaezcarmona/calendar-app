@@ -45,7 +45,10 @@ const initEvent = {
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
 // Aqui es el primer enganche root-element  a nuestra app que es en el index.html o index.js
-Modal.setAppElement('#calendar-app');
+
+if (process.env.NODE_ENV !== 'test') {
+  Modal.setAppElement('#calendar-app');
+}
 
 export default function CalendarModal() {
   const { modalOpen } = useSelector((store) => store.ui);
@@ -169,6 +172,7 @@ export default function CalendarModal() {
       className="modal"
       overlayClassName="modal-fondo"
       closeTimeoutMS={200}
+      ariaHideApp={!process.env.NODE_ENV === 'test'}
     >
       <h1> {activeEvent ? 'Editar Evento' : 'Nuevo evento'} </h1>
       <hr />

@@ -13,22 +13,23 @@ import {
 export function LoginScreen() {
   const dispatch = useDispatch();
   const [formLoginValues, handleLoginInputChange] = useForm({
-    logEmail: 'jose@manu.com',
-    logPassw: '123456'
+    logEmail: '',
+    logPassw: ''
   });
   const { logEmail, logPassw } = formLoginValues;
 
   const [formRegisterValues, handleRegisterInputChange] = useForm({
-    RegName: 'Pepito Floro',
-    regEmail: 'pepito@email.com',
-    regPassw1: '123456',
-    regPassw2: '123456'
+    RegName: '',
+    regEmail: '',
+    regPassw1: '',
+    regPassw2: ''
   });
 
   const { RegName, regEmail, regPassw1, regPassw2 } = formRegisterValues;
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
+
     dispatch(StartLogin(logEmail, logPassw));
   };
 
