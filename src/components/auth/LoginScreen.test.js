@@ -6,11 +6,20 @@ import thunk from 'redux-thunk';
 import '@testing-library/jest-dom';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
+import Swal from 'sweetalert2';
 import { LoginScreen } from './LoginScreen';
-import { StartLogin } from '../../redux/actioncreators/auth.actioncreator';
+import {
+  StartLogin,
+  startRegister
+} from '../../redux/actioncreators/auth.actioncreator';
 
 jest.mock('../../redux/actioncreators/auth.actioncreator', () => ({
-  StartLogin: jest.fn()
+  StartLogin: jest.fn(),
+  startRegister: jest.fn()
+}));
+
+jest.mock('sweetalert2', () => ({
+  fire: jest.fn()
 }));
 
 const middlewares = [thunk];
@@ -59,5 +68,70 @@ describe('Given the LoginScreen Component', () => {
     });
 
     expect(StartLogin).toHaveBeenCalledWith('trolorolo@email.com', '123456');
+  });
+  test('If passwords are differents no register', () => {
+    wrapper.find('input[name="regPassw1"]').simulate('change', {
+      target: {
+        name: 'regPassw1',
+        value: '123456'
+      }
+    });
+
+    wrapper.find('input[name="regPassw2"]').simulate('change', {
+      target: {
+        name: 'regPassw2',
+        value: '1234567'
+      }
+    });
+    wrapper
+      .find('form')
+      .at(1)
+      .prop('onSubmit')({
+      preventDefault() {}
+    });
+
+    expect(startRegister).not.toHaveBeenCalled();
+    expect(Swal.fire).toHaveBeenCalledWith(
+      'Error',
+      'las contraseñas deben ser iguales',
+      'error'
+    );
+  });
+
+  test('Register with same passwords ', () => {
+    wrapper.find('input[name="RegName"]').simulate('change', {
+      target: {
+        name: 'RegName',
+        value: 'trolorolo'
+      }
+    });
+
+    wrapper.find('input[name="regPassw1"]').simulate('change', {
+      target: {
+        name: 'regPassw1',
+        value: '123456'
+      }
+    });
+
+    wrapper.find('input[name="regPassw2"]').simulate('change', {
+      target: {
+        name: 'regPassw2',
+        value: '123456'
+      }
+    });
+
+    wrapper
+      .find('form')
+      .at(1)
+      .prop('onSubmit')({
+      preventDefault() {}
+    });
+
+    expect(Swal.fire).not.toHaveBeenCalledWith(
+      'Error',
+      'las contraseñas deben ser iguales',
+      'error'
+    );
+    expect(startRegister).toHaveBeenCalledWith('', '123456', 'trolorolo');
   });
 });

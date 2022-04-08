@@ -29,7 +29,7 @@ export function LoginScreen() {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    console.log(`email: ${logEmail}`, logPassw);
+
     dispatch(StartLogin(logEmail, logPassw));
   };
 
