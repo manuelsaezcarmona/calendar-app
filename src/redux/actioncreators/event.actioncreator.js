@@ -36,8 +36,7 @@ export const eventStartAddNew = (event) => async (dispatch, getState) => {
       dispatch(addNewEvent(event));
     }
   } catch (error) {
-    // console.log(error);
-    return error;
+    console.log(error);
   }
 };
 
@@ -73,8 +72,7 @@ export const startEventUpdate = (event) => {
         Swal.fire('Error', body.msg, 'error');
       }
     } catch (error) {
-      // console.log(error);
-      return error;
+      console.log(error);
     }
   };
 };
@@ -98,8 +96,7 @@ export const startEventDelete = () => {
         Swal.fire('Error', body.msg, 'error');
       }
     } catch (error) {
-      // console.log(error);
-      return error;
+      console.log(error);
     }
   };
 };
@@ -128,8 +125,7 @@ export const eventStartLoading = () => {
       // console.log(events);
       dispatch(eventLoaded(events));
     } catch (error) {
-      // console.log(error);
-      return error;
+      console.log(error);
     }
   };
 };
