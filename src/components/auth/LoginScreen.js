@@ -94,7 +94,7 @@ export function LoginScreen() {
                 type="email"
                 className="form-control"
                 placeholder="Correo"
-                name="RegEmail"
+                name="regEmail"
                 value={regEmail}
                 onChange={handleRegisterInputChange}
               />
