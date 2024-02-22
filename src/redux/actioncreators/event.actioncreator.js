@@ -34,11 +34,12 @@ export const eventStartAddNew = (event) => async (dispatch, getState) => {
       };
 
       dispatch(addNewEvent(event));
-      return body.ok;
+      return body;
     }
   } catch (error) {
     return error;
   }
+  return body;
 };
 
 export const setActiveEvent = (event) => ({
