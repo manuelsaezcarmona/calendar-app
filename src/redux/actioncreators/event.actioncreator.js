@@ -129,7 +129,7 @@ export const eventStartLoading = () => {
       // console.log(events);
       dispatch(eventLoaded(events));
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 };
