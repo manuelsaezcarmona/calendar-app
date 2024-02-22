@@ -39,7 +39,7 @@ export const eventStartAddNew = (event) => async (dispatch, getState) => {
   } catch (error) {
     return error;
   }
-  return body;
+  return uid;
 };
 
 export const setActiveEvent = (event) => ({
