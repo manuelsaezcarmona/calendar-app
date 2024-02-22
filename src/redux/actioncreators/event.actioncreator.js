@@ -126,8 +126,8 @@ export const eventStartLoading = () => {
        */
       const events = prepareEvents(body.eventos);
 
-      // console.log(events);
       dispatch(eventLoaded(events));
+      return events;
     } catch (error) {
       return error;
     }
