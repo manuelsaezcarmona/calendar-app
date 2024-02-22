@@ -34,6 +34,7 @@ export const eventStartAddNew = (event) => async (dispatch, getState) => {
       };
 
       dispatch(addNewEvent(event));
+      return body.ok;
     }
   } catch (error) {
     return error;
@@ -71,6 +72,7 @@ export const startEventUpdate = (event) => {
       } else {
         Swal.fire('Error', body.msg, 'error');
       }
+      return body.msg;
     } catch (error) {
       return error;
     }
@@ -95,6 +97,7 @@ export const startEventDelete = () => {
       } else {
         Swal.fire('Error', body.msg, 'error');
       }
+      return body.msg;
     } catch (error) {
       return error;
     }
